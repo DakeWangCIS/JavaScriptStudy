@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Redux</title>
+</head>
+<body>
+    <div>
+        <button id="sub">SUB</button>
+        <span id="countSpan">1</span>
+        <span id="nameSpan"></span>
+        <button id="add">ADD</button>
+    </div>
+
+    <script src="https://unpkg.com/redux@4.2.0/dist/redux.js"></script>
+
+    <script>
+        const subBtn = document.getElementById('sub');
+        const addBtn = document.getElementById('add');
+        const countSpan = document.getElementById('countSpan');
+        const nameSpan = document.getElementById('nameSpan');
+
+        function reducer(state = {count: 1, name: "Rana"}, action) {
+            switch (action.type) {
+                case 'ADD':
+                    return {...state, count: state.count + action.payload};
+                case 'SUB':
+                    return {...state, count: state.count - action.payload};
+                default:
+                    return state;
+            }
+        }
+
+        const store = Redux.createStore(reducer);
+
+        nameSpan.innerText = store.getState().name;
+
+        store.subscribe(() => {
+            countSpan.innerText = store.getState().count;
+            nameSpan.innerText = store.getState().name;
+        });
+
+        let count = 1;
+
+        subBtn.addEventListener('click', () => {
+            store.dispatch({type: 'SUB', payload: 2});
+        });
+
+        addBtn.addEventListener('click', () => {
+            store.dispatch({type: 'ADD', payload: 3});
+        });
+    </script>
+</body>
+</html>
